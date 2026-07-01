@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Typography, Container, Card, CardContent, List, ListItem, ListItemText, CircularProgress } from '@mui/material';
+import { logError } from './logError';
 
 const QuotesApp = () => {
   const [quote, setQuote] = useState('');
@@ -32,21 +33,24 @@ const QuotesApp = () => {
     }
   }, []);
 
-  const createPost = () => {
-    const newPost = {
-      content: quote,
-      author: author,
-      timestamp: new Date().toLocaleString(),
-    };
+  const createPost = async () => {
+    try {
+      const newPost = {
+        content: quote,
+        author: author,
+        timestamp: new Date().toLocaleString(),
+      };
 
-    const updatedPosts = [...posts, newPost];
-    setPosts(updatedPosts);
+      const updatedPosts = [...posts, newPost];
 
+      localStorage.setItem('posts', JSON.stringify(updatedPosts.toUpperCase()));
 
-
-    localStorage.setItem('posts', JSON.stringify(updatedPosts));
-
-    alert('New post created successfully!');
+      setPosts(updatedPosts);
+      alert('New post created successfully!');
+    } catch (err) {
+      await logError(err);
+      alert(`Error: ${err.message}`);
+    }
   };
 
   const deletePost = (index) => {
