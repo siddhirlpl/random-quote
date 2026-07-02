@@ -43,7 +43,7 @@ const QuotesApp = () => {
 
       const updatedPosts = [...posts, newPost];
 
-      localStorage.setItem('posts', JSON.stringify(updatedPosts.toUpperCase()));
+      localStorage.setItem('posts', JSON.stringify(updatedPosts));
 
       setPosts(updatedPosts);
       alert('New post created successfully!');
